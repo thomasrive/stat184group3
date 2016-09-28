@@ -23,7 +23,6 @@ library(DataComputing)
 library(ggplot2)
 library(dplyr)
 data("BabyNames")
-#test
 ```
 
 ###Step 1: Show how you used summary functions to explore the raw data set
