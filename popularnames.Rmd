@@ -1,0 +1,91 @@
+---
+title: "Popular Names"
+author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
+date: "2016-09-27"
+output: 
+  html_document:
+    fig_height: 3
+    fig_width: 5
+---
+<!-- Don't edit in between this line and the one below -->
+```{r include=FALSE}
+# Don't delete this chunk if you are using the DataComputing package
+library(DataComputing)
+```
+*Source file* 
+```{r, results='asis', echo=FALSE}
+includeSourceDocuments()
+```
+<!-- Don't edit the material above this line -->
+
+```{r loading}
+library(DataComputing)
+library(ggplot2)
+library(dplyr)
+data("BabyNames")
+#test
+```
+
+###Step 1: Show how you used summary functions to explore the raw data set
+```{r step1, echo=TRUE, message=TRUE, warning=TRUE}
+BabyNames %>%
+  summarise(n_distinct(name), n_distinct(year))
+
+BabyNames %>%
+  group_by(sex) %>%
+  summarise(n_distinct(name))
+
+BabyNames %>%
+  filter(name == "Rocco") %>%
+  head()
+
+head(BabyNames)
+```
+
+###Step 2 on the white board
+
+###Step 3: attempt to answer all questions about the data
+
+1. What variables from the raw data table do not appear at all in the graph?
++ Sex is entirely excluded from the graph
+2. What variable in the graph are similar to corresponding variables in the raw data table, but might have been transformed in some way?
++ The name variable is expressed in only names of interest in the graph.
++ The count variable shows only the counts per year of names of interests within the graph
++ The year variable has been compressed to show year by year for all the names for that particular year
+
+
+###Step 4: attemp to answer all questions about the data
+1. Have cases been filtered out?
+  + Yes, cases that do not include the names of interest have been filtered out.
+2. Have cases been grouped and summarized within groups in any way?
+  + The years have been grouped, with counts of each name being assigned to the same year, instead of individually being assigned the same year.
+3. Have any new variable been introduced? If so, what's the relationship between the new variables and the existing variables?
++ No new variables have been introduced.
+
+###Step 5 explanation of data wrangling steps in english
+We start by getting rid of the sex variable because we are only concerned with the remaining variables. We then filter out all the cases that don't involve the names of interest. Since the final chart has smaller numbers for clarity, we can divide the counts by 10,000 to make the final graph simpler.Grouping by year then name and combining the sums for counts of the same name, due to some names being used across sexes, gives us our final table.
+
+###Step 6 on white board
+
+###Step 7 data wrangling
+```{r step7}
+BabyNames2 <- BabyNames %>%
+  select(name, count, year) %>%
+  filter(name %in% c("Rocco", "Thomas", "Kristin", "Ruizhi")) %>%
+  mutate(count2 = count/10000) %>%
+  group_by(year, name) %>%
+  summarise(Count = sum(count2))
+
+head(BabyNames2)
+tail(BabyNames2)
+```
+
+
+###ggplot() graph of first names for those in your group
+```{r graph}
+BabyNames2 %>%
+  ggplot(aes(x = year, y = Count, group = name)) +
+  geom_line( size = 1, alpha = 0.5, aes(color = name)) +
+  ylab("Popularity") + xlab("Year")
+```
+
