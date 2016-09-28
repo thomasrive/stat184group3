@@ -73,7 +73,8 @@ BabyNames2 <- BabyNames %>%
   filter(name %in% c("Rocco", "Thomas", "Kristin", "Ruizhi")) %>%
   mutate(count2 = count/10000) %>%
   group_by(year, name) %>%
-  summarise(Count = sum(count2))
+  summarise(Count = sum(count2)) %>%
+  mutate(Total = sum(Count), Popularity = (Count/Total)*10)
 
 head(BabyNames2)
 tail(BabyNames2)
@@ -83,7 +84,7 @@ tail(BabyNames2)
 ###ggplot() graph of first names for those in your group
 ```{r graph}
 BabyNames2 %>%
-  ggplot(aes(x = year, y = Count, group = name)) +
+  ggplot(aes(x = year, y = Popularity, group = name)) +
   geom_line( size = 1, alpha = 0.5, aes(color = name)) +
   ylab("Popularity") + xlab("Year")
 ```
