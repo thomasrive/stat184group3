@@ -53,7 +53,7 @@ head(BabyNames)
 + The year variable has been compressed to show year by year for all the names for that particular year
 
 
-###Step 4: attemp to answer all questions about the data
+###Step 4: attempt to answer all questions about the data
 1. Have cases been filtered out?
   + Yes, cases that do not include the names of interest have been filtered out.
 2. Have cases been grouped and summarized within groups in any way?
@@ -74,7 +74,7 @@ BabyNames2 <- BabyNames %>%
   mutate(count2 = count/10000) %>%
   group_by(year, name) %>%
   summarise(Count = sum(count2)) %>%
-  mutate(Total = sum(Count), Popularity = (Count/Total)*10)
+  mutate(Total = sum(Count), Popularity = (Count/Total)*100)
 
 head(BabyNames2)
 tail(BabyNames2)
@@ -85,7 +85,7 @@ tail(BabyNames2)
 ```{r graph}
 BabyNames2 %>%
   ggplot(aes(x = year, y = Popularity, group = name)) +
-  geom_line( size = 1, alpha = 0.5, aes(color = name)) +
-  ylab("Popularity") + xlab("Year")
+  geom_line( size = 1, alpha = 0.5, aes(linetype = name, color = name)) +
+  ylab("Popularity %") + xlab("Year")
 ```
 
