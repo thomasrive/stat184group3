@@ -62,7 +62,7 @@ head(BabyNames)
 + No new variables have been introduced.
 
 ###Step 5 explanation of data wrangling steps in english
-We start by getting rid of the sex variable because we are only concerned with the remaining variables. We then filter out all the cases that don't involve the names of interest. Since the final chart has smaller numbers for clarity, we can divide the counts by 10,000 to make the final graph simpler.Grouping by year then name and combining the sums for counts of the same name, due to some names being used across sexes, gives us our final table.
+We start by getting rid of the sex variable because we are only concerned with the remaining variables. We then filter out all the cases that don't involve the names of interest. Since the final chart has smaller numbers for clarity out of 10, we can assume that the y-variable is proportional. Therefore for each year we generate a total count of the total amount of names for that particular year. Dividing the counts for each name by the total will give a proportional popularity for the name for that particular year. Grouping by year then name and combining the sums for counts of the same name, due to some names being used across sexes, gives us our final table.
 
 ###Step 6 on white board
 
