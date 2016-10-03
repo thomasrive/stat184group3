@@ -18,5 +18,58 @@ includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
 
+###Task 0
+```{r task0}
+data("OrdwayBirds")
+OrdwayBirds2 <-
+  OrdwayBirds %>%
+  select(SpeciesName, Month, Day) %>%
+  mutate(Month = as.numeric(as.character(Month)), Day=as.numeric(as.character(Day)))
+```
 
-Delete this sentence and start entering your text here.
+###Task 1
+How many different species including mis-spellings are in the data?
+```{r task1}
+summarise(OrdwayBirds2, n_distinct(SpeciesName))
+```
+
+###Task 2
+```{r task2}
+CorrectedBirds <-
+  OrdwayBirds2 %>%
+  inner_join(OrdwaySpeciesNames) %>%
+  select(Species = SpeciesNameCleaned, Month, Day) %>%
+  na.omit()
+```
+
+* Which variable was used for matching cases: `SpeciesName`
+* What were the variables that will be added: `Species`
+
+###Task 3
+```{r task3}
+#Species of more than 1000 designated as major
+Majors <-
+CorrectedBirds %>%
+  group_by(Species) %>%
+  summarise(Count = n()) %>%
+  arrange(desc(Count)) %>%
+  filter(Count >= 1000)
+```
+
+###Task 4
+```{r task4}
+ByMonth <-
+CorrectedBirds %>%
+  filter(Species %in% Majors$Species) %>%
+  group_by(Species, Month) %>%
+  summarise(Count = n())
+
+ggplot(data=ByMonth,aes(x=reorder(Month,Month),y=Count ,fill=Species))+geom_bar(stat='identity',position='stack', width=.9) 
+ggplot(data=ByMonth,aes(x=reorder(Month,Month),y=Count ))+geom_bar(stat='identity',position='stack', width=.9)+ facet_wrap(~Species,ncol=3) 
+
+```
+
+* The Black-capped Chickadee is the only species present year round
+* Migratory Species: Field Sparrow, Slate-colored Junco, and Tree Swallow
+* American Goldflinch(October), Black-capped Chickadee (November), Field Sparrow(May), Slate-colored Junco(October), Tree Swallow(March)
+* American Foldfinch, Black-capped Chickadee, Field Sparrow, Slate-colored Junco, Tree Swallow
