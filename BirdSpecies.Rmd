@@ -25,13 +25,20 @@ OrdwayBirds2 <-
   OrdwayBirds %>%
   select(SpeciesName, Month, Day) %>%
   mutate(Month = as.numeric(as.character(Month)), Day=as.numeric(as.character(Day)))
+data("OrdwaySpeciesNames")
 ```
 
 ###Task 1
 How many different species including mis-spellings are in the data?
 ```{r task1}
 summarise(OrdwayBirds2, n_distinct(SpeciesName))
+summarise(OrdwaySpeciesNames, n_distinct(SpeciesName))
 ```
+OrdwayBirds has 275 different species including mis-spellings
+
+OrdwaySpeciesNames has 251 distinct species names
+
+Therefore there are 275-251 = 24 misspellings
 
 ###Task 2
 ```{r task2}
