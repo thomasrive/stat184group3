@@ -29,3 +29,14 @@ Trips <- readRDS(gzcon(url(data_site)))
 TripsFull <- readRDS(gzcon(url(data_sitefull)))
 ```
 
+####A1 - How long?
+```{r A1}
+#create duration variable edate - sdate
+dur60 <- as.numeric(Trips$edate - Trips$sdate)
+Trips$dur60 <- dur60
+boxplot(dur60 ~ client, data = Trips, 
+        main = "Bike Rental Durations",
+        xlab = "Duration", ylab = "Client",
+        outline = FALSE)
+```
+
