@@ -11,9 +11,21 @@ output:
 ```{r include=FALSE}
 # Don't delete this chunk if you are using the DataComputing package
 library(DataComputing)
+library(ggplot2)
+library(mosaic)
+library(mosaicData)
 ```
 *Source file* 
 ```{r, results='asis', echo=FALSE}
 includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
+
+```{r LoadData, message=FALSE, warning=FALSE}
+Stations <- mosaic::read.file("http://tiny.cc/dcf/DC-Stations.csv")
+data_site <- "http://tiny.cc/dcf/2014-Q4-Trips-History-Data-Small.rds"
+data_sitefull <- "http://tiny.cc/dcf/2014-Q4-Trips-History-Data.rds"
+Trips <- readRDS(gzcon(url(data_site)))
+TripsFull <- readRDS(gzcon(url(data_sitefull)))
+```
+
