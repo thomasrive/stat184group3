@@ -40,3 +40,18 @@ boxplot(dur60 ~ client, data = Trips,
         outline = FALSE, range = 2)
 ```
 
+####A2 - When are bikes used?
+```{r A2}
+hist(Trips$sdate, "days", col="grey",
+     main = "Histogram of Checkout by Day")
+hist(Trips$sdate, "weeks", col="grey",
+     main = "Histogram of Checkout by Weeks")
+hist(Trips$sdate, "hour", col="grey",
+     main = "Histogram of Checkout by Hour")
+hist(Trips$sdate, "mins", col="grey",
+     main = "Histogram of Checkout by Mins")
+hist(lubridate::hour(Trips$sdate))
+hist(lubridate::yday(Trips$sdate))
+hist(lubridate::wday(Trips$sdate))
+```
+
