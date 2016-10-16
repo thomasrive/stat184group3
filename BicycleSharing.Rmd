@@ -29,29 +29,82 @@ Trips <- readRDS(gzcon(url(data_site)))
 TripsFull <- readRDS(gzcon(url(data_sitefull)))
 ```
 
-####A1 - How long?
-```{r A1}
-#create duration variable edate - sdate
-dur60 <- (as.numeric(Trips$edate - Trips$sdate))/60
-Trips$dur60 <- dur60
-boxplot(dur60 ~ client, data = Trips, 
-        main = "Bike Rental Durations",
-        xlab = "Client", ylab = "Duration/60",
-        outline = FALSE, range = 2)
+##A.1 How Long
+
+```{r}
+Trips %>%
+  ggplot(aes(x = client, y = as.numeric(edate-sdate)/60)) +
+  geom_boxplot() + 
+  ylim(0,60) +
+  ylab("dur/60")
+
 ```
 
-####A2 - When are bikes used?
-```{r A2}
-hist(Trips$sdate, "days", col="grey",
-     main = "Histogram of Checkout by Day")
-hist(Trips$sdate, "weeks", col="grey",
-     main = "Histogram of Checkout by Weeks")
-hist(Trips$sdate, "hour", col="grey",
-     main = "Histogram of Checkout by Hour")
-hist(Trips$sdate, "mins", col="grey",
-     main = "Histogram of Checkout by Mins")
-hist(lubridate::hour(Trips$sdate))
-hist(lubridate::yday(Trips$sdate))
-hist(lubridate::wday(Trips$sdate))
+##A.2 When are Bikes Used
+
+```{r Density plot for Day of the Year}
+Trips %>%
+  mutate(DoY = lubridate::yday(sdate))%>%
+  ggplot(aes(x = DoY))+
+  geom_density(fill="gray", adjust = 2) +
+  xlab("Day of the Year")
+
 ```
 
+```{r Density plot for day of the week}
+Trips %>%
+  mutate(DoW = lubridate::wday(sdate))%>%
+  ggplot(aes(x = DoW))+
+  geom_density(fill = "blue", adjust = 2)+
+  xlab("Day of the Week")
+```
+
+```{r Density plot for hour of the day}
+Trips %>%
+  mutate(Hour = lubridate::hour(sdate))%>%
+  ggplot(aes(x = Hour))+
+  geom_density(fill = "red", adjust = 2)+
+  xlab("Hour")
+
+```
+
+```{r Density plot for minute of the day}
+Trips %>%
+  mutate(Min = lubridate::minute(sdate))%>%
+  ggplot(aes(x = Min))+
+  geom_density(fill = "green", adjust = 2)+
+  xlab("Minute of the Day")
+```
+
+```{r Frequnecy by hour, weekday, and clientype}
+Trips%>%
+  mutate(hour = lubridate::hour(sdate))%>%
+  mutate(wday = lubridate::wday(sdate))%>%
+  group_by(hour, wday, client)%>%
+  summarise(count = n()) %>%
+  ggplot(aes(x=hour, y = count)) +
+  geom_line(aes(linetype = client), na.rm = TRUE)+
+  facet_wrap(~wday)
+
+```
+
+```{r Density by hour, weekday, and clientype}
+Trips%>%
+  mutate(hour = lubridate::hour(sdate))%>%
+  mutate(wday = lubridate::wday(sdate))%>%
+  ggplot(aes(x=hour)) +
+  geom_density(aes(colour = client), adjust = 2)+
+  facet_wrap(~wday)
+```
+
+##A.4
+```{r}
+library(leaflet)
+stationMap <-
+  leaflet(Stations) %>%
+  addTiles()%>%
+  addCircleMarkers(radius = 2, color = "red") %>%
+  setView(-77.04,38.9,zoom = 12)
+
+stationMap
+```
