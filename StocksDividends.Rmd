@@ -20,10 +20,18 @@ library(mosaicData)
 includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
-
+####Getting Price Data
 ```{r Get}
 companies <- c("WMT", "XOM", "AAPL", "MCK")
 Prices <-
   read_stock_prices(companies, what = "daily", start_year = 2000, end_year = 2015)
 ```
+####Closing Price
+```{r Closing}
+Prices %>%
+  ggplot(aes(x = date, y = close, group = company)) +
+  geom_line( size = 1, alpha = 0.5, aes(color = company)) +
+  ylab("Closing Price $") + xlab("Date")
+```
+
 
