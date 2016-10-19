@@ -1,5 +1,5 @@
 ---
-title: "Bicycle Sharing"
+title: "Stocks & Dividends"
 author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
 date: "2016-10-19"
 output: 
@@ -20,3 +20,10 @@ library(mosaicData)
 includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
+
+```{r Get}
+companies <- c("WMT", "XOM", "AAPL", "MCK")
+Prices <-
+  read_stock_prices(companies, what = "daily", start_year = 2000, end_year = 2015)
+```
+
