@@ -20,8 +20,9 @@ library(mosaicData)
 includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
+
 ####Getting Price Data
-```{r Get}
+```{r Get, message=FALSE, warning=FALSE}
 companies <- c("WMT", "XOM", "AAPL", "MCK")
 Prices <-
   read_stock_prices(companies, what = "daily", start_year = 2000, end_year = 2015)
@@ -34,4 +35,12 @@ Prices %>%
   ylab("Closing Price $") + xlab("Date")
 ```
 
+####Buy/Sell Profit
+```{r buysell}
+Actions <-
+  data.frame(
+    action = c("buy", "sell"),
+    date = ymd(c("2006-01-03", "2014-12-30"))
+  )
+```
 
