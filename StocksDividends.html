@@ -95,6 +95,7 @@ button.code-folding-btn:focus {
 </style>
 
 
+
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
@@ -124,7 +125,7 @@ $(document).ready(function () {
 
 
 <!-- Don't edit in between this line and the one below -->
-<p><em>Source file</em> <a href="data:text/x-markdown;base64,LS0tCnRpdGxlOiAiU3RvY2tzICYgRGl2aWRlbmRzIgphdXRob3I6ICJSb2NjbyBWaXRhbG9uZSwgVGhvbWFzIFJpdmVyYSwgS3Jpc3RpbiBTYXJzZmllbGQsIFJ1aXpoaSBRaWFvIgpkYXRlOiAiMjAxNi0xMC0xOSIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgZmlnX2hlaWdodDogMwogICAgZmlnX3dpZHRoOiA1Ci0tLQo8IS0tIERvbid0IGVkaXQgaW4gYmV0d2VlbiB0aGlzIGxpbmUgYW5kIHRoZSBvbmUgYmVsb3cgLS0+CmBgYHtyIGluY2x1ZGU9RkFMU0V9CiMgRG9uJ3QgZGVsZXRlIHRoaXMgY2h1bmsgaWYgeW91IGFyZSB1c2luZyB0aGUgRGF0YUNvbXB1dGluZyBwYWNrYWdlCmxpYnJhcnkoRGF0YUNvbXB1dGluZykKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KG1vc2FpYykKbGlicmFyeShtb3NhaWNEYXRhKQpgYGAKKlNvdXJjZSBmaWxlKiAKYGBge3IsIHJlc3VsdHM9J2FzaXMnLCBlY2hvPUZBTFNFfQppbmNsdWRlU291cmNlRG9jdW1lbnRzKCkKYGBgCjwhLS0gRG9uJ3QgZWRpdCB0aGUgbWF0ZXJpYWwgYWJvdmUgdGhpcyBsaW5lIC0tPgoKIyMjI0dldHRpbmcgUHJpY2UgRGF0YQpgYGB7ciBHZXQsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmNvbXBhbmllcyA8LSBjKCJXTVQiLCAiWE9NIiwgIkFBUEwiLCAiTUNLIikKUHJpY2VzIDwtCiAgcmVhZF9zdG9ja19wcmljZXMoY29tcGFuaWVzLCB3aGF0ID0gImRhaWx5Iiwgc3RhcnRfeWVhciA9IDIwMDAsIGVuZF95ZWFyID0gMjAxNSkKYGBgCiMjIyNDbG9zaW5nIFByaWNlCmBgYHtyIENsb3Npbmd9ClByaWNlcyAlPiUKICBnZ3Bsb3QoYWVzKHggPSBkYXRlLCB5ID0gY2xvc2UsIGdyb3VwID0gY29tcGFueSkpICsKICBnZW9tX2xpbmUoIHNpemUgPSAxLCBhbHBoYSA9IDAuNSwgYWVzKGNvbG9yID0gY29tcGFueSkpICsKICB5bGFiKCJDbG9zaW5nIFByaWNlICQiKSArIHhsYWIoIkRhdGUiKQpgYGAKCiMjIyNCdXkvU2VsbCBQcm9maXQK" target="_blank" title="User  at /home/thomasrive" download="StocksDividends.Rmd"> ⇒ StocksDividends.Rmd</a><br />
+<p><em>Source file</em> <a href="data:text/x-markdown;base64,LS0tCnRpdGxlOiAiU3RvY2tzICYgRGl2aWRlbmRzIgphdXRob3I6ICJSb2NjbyBWaXRhbG9uZSwgVGhvbWFzIFJpdmVyYSwgS3Jpc3RpbiBTYXJzZmllbGQsIFJ1aXpoaSBRaWFvIgpkYXRlOiAiMjAxNi0xMC0xOSIKb3V0cHV0OiAKICBodG1sX2RvY3VtZW50OgogICAgZmlnX2hlaWdodDogMwogICAgZmlnX3dpZHRoOiA1Ci0tLQo8IS0tIERvbid0IGVkaXQgaW4gYmV0d2VlbiB0aGlzIGxpbmUgYW5kIHRoZSBvbmUgYmVsb3cgLS0+CmBgYHtyIGluY2x1ZGU9RkFMU0V9CiMgRG9uJ3QgZGVsZXRlIHRoaXMgY2h1bmsgaWYgeW91IGFyZSB1c2luZyB0aGUgRGF0YUNvbXB1dGluZyBwYWNrYWdlCmxpYnJhcnkoRGF0YUNvbXB1dGluZykKbGlicmFyeShnZ3Bsb3QyKQpsaWJyYXJ5KG1vc2FpYykKbGlicmFyeShtb3NhaWNEYXRhKQpgYGAKKlNvdXJjZSBmaWxlKiAKYGBge3IsIHJlc3VsdHM9J2FzaXMnLCBlY2hvPUZBTFNFfQppbmNsdWRlU291cmNlRG9jdW1lbnRzKCkKYGBgCjwhLS0gRG9uJ3QgZWRpdCB0aGUgbWF0ZXJpYWwgYWJvdmUgdGhpcyBsaW5lIC0tPgoKIyMjI0dldHRpbmcgUHJpY2UgRGF0YQpgYGB7ciBHZXQsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CmNvbXBhbmllcyA8LSBjKCJXTVQiLCAiWE9NIiwgIkFBUEwiLCAiTUNLIikKUHJpY2VzIDwtCiAgcmVhZF9zdG9ja19wcmljZXMoY29tcGFuaWVzLCB3aGF0ID0gImRhaWx5Iiwgc3RhcnRfeWVhciA9IDIwMDAsIGVuZF95ZWFyID0gMjAxNSkKYGBgCiMjIyNDbG9zaW5nIFByaWNlCmBgYHtyIENsb3Npbmd9ClByaWNlcyAlPiUKICBnZ3Bsb3QoYWVzKHggPSBkYXRlLCB5ID0gY2xvc2UsIGdyb3VwID0gY29tcGFueSkpICsKICBnZW9tX2xpbmUoIHNpemUgPSAxLCBhbHBoYSA9IDAuNSwgYWVzKGNvbG9yID0gY29tcGFueSkpICsKICB5bGFiKCJDbG9zaW5nIFByaWNlICQiKSArIHhsYWIoIkRhdGUiKQpgYGAKCiMjIyNCdXkvU2VsbCBQcm9maXQKYGBge3IgYnV5c2VsbH0KQWN0aW9ucyA8LQogIGRhdGEuZnJhbWUoCiAgICBhY3Rpb24gPSBjKCJidXkiLCAic2VsbCIpLAogICAgZGF0ZSA9IHltZChjKCIyMDA2LTAxLTAzIiwgIjIwMTQtMTItMzAiKSkKICApCgpTYWxlc0RpZmZlcmVuY2UgPC0KICBBY3Rpb25zICU+JQogIGlubmVyX2pvaW4oUHJpY2VzLCBieSA9ICJkYXRlIikgJT4lCiAgc2VsZWN0KGFjdGlvbiwgYWRqX2Nsb3NlLCBjb21wYW55KSAlPiUKICBzcHJlYWQoa2V5ID0gYWN0aW9uLCB2YWx1ZSA9IGFkal9jbG9zZSkKICAKICAKYGBgCgo=" target="_blank" title="User  at /home/thomasrive" download="StocksDividends.Rmd"> ⇒ StocksDividends.Rmd</a><br />
 <!-- Don't edit the material above this line --></p>
 <div id="getting-price-data" class="section level4">
 <h4>Getting Price Data</h4>
@@ -142,6 +143,17 @@ Prices &lt;-
 </div>
 <div id="buysell-profit" class="section level4">
 <h4>Buy/Sell Profit</h4>
+<pre class="r"><code>Actions &lt;-
+  data.frame(
+    action = c(&quot;buy&quot;, &quot;sell&quot;),
+    date = ymd(c(&quot;2006-01-03&quot;, &quot;2014-12-30&quot;))
+  )
+
+SalesDifference &lt;-
+  Actions %&gt;%
+  inner_join(Prices, by = &quot;date&quot;) %&gt;%
+  select(action, adj_close, company) %&gt;%
+  spread(key = action, value = adj_close)</code></pre>
 </div>
 
 
@@ -155,6 +167,7 @@ Prices &lt;-
 $(document).ready(function () {
   $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
 });
+
 
 </script>
 
