@@ -4,8 +4,8 @@ author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
 date: "2016-10-19"
 output: 
   html_document:
-    fig_height: 3
-    fig_width: 5
+    fig_height: 5
+    fig_width: 9
 ---
 <!-- Don't edit in between this line and the one below -->
 ```{r include=FALSE}
@@ -31,7 +31,7 @@ Prices <-
 ```{r Closing}
 Prices %>%
   ggplot(aes(x = date, y = close, group = company)) +
-  geom_line( size = 1, alpha = 0.5, aes(color = company)) +
+  geom_line( size = 0.3, alpha = 1, aes(color = company)) +
   ylab("Closing Price $") + xlab("Date")
 ```
 
@@ -42,13 +42,36 @@ Actions <-
     action = c("buy", "sell"),
     date = ymd(c("2006-01-03", "2014-12-30"))
   )
+head(Actions)
 
 SalesDifference <-
   Actions %>%
   inner_join(Prices, by = "date") %>%
   select(action, adj_close, company) %>%
-  spread(key = action, value = adj_close)
-  
-  
+  spread(key = action, value = adj_close) %>%
+  mutate(profit = round(sell - buy, 2), percent = round((profit/buy)*100,2))
+
+head(SalesDifference)
+```
+
+####Indexing Prices
+```{r Indexing}
+ref_date <- ymd("2005-01-03")
+Reference <-
+  Prices %>%
+  filter(date==ref_date) %>%
+  select(company, standard=close)
+
+Prices2 <-
+  Prices %>%
+  left_join(Reference, by = "company") %>%
+  mutate(StandardPrice = round(close/standard,2))
+
+head(Prices2)
+
+Prices2 %>%
+  ggplot(aes(x = date, y = StandardPrice, group = company)) +
+  geom_line( size = 0.3, alpha = 1, aes(color = company)) +
+  ylab("Standardized Price") + xlab("Date")
 ```
 
