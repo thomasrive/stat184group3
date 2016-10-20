@@ -42,5 +42,13 @@ Actions <-
     action = c("buy", "sell"),
     date = ymd(c("2006-01-03", "2014-12-30"))
   )
+
+SalesDifference <-
+  Actions %>%
+  inner_join(Prices, by = "date") %>%
+  select(action, adj_close, company) %>%
+  spread(key = action, value = adj_close)
+  
+  
 ```
 
