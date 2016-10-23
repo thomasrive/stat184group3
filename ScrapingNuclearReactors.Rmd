@@ -11,6 +11,7 @@ output:
 ```{r include=FALSE}
 # Don't delete this chunk if you are using the DataComputing package
 library(DataComputing)
+library(dplyr)
 ```
 *Source file* 
 ```{r, results='asis', echo=FALSE}
@@ -18,5 +19,28 @@ includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
 
+```{r Scrape1}
+library(rvest)
+library(lubridate)
+page <- "http://en.wikipedia.org/wiki/List_of_nuclear_reactors"
+xpath <- '//*[@id="mw-content-text"]/table[23]'
+table_list <- page %>%
+  read_html() %>%
+  html_nodes(xpath = xpath) %>%
+  html_table(fill = TRUE)
 
-Delete this sentence and start entering your text here.
+table_frame <- as.data.frame(table_list)
+table_frame <- table_frame[-1,]
+table_frame <-
+  table_frame %>%
+  rename(Reactor_Type = Reactor) %>%
+  rename(Reactor_Model = Reactor.1) %>%
+  rename(Capacity_Net = Capacity.in.MW) %>%
+  rename(Capacity_Gross = Capacity.in.MW.1) %>%
+  mutate(Capacity_Net = as.integer(Capacity_Net)) %>%
+  mutate(Capacity_Gross = as.integer((Capacity_Gross))) %>%
+  mutate(Construction.Start.Date = dmy(Construction.Start.Date)) %>%
+  mutate(Commercial.Operation.Date = dmy(Commercial.Operation.Date)) %>%
+  mutate(Closure = dmy(Closure))
+```
+
