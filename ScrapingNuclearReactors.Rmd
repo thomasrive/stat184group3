@@ -11,7 +11,8 @@ output:
 ```{r include=FALSE}
 # Don't delete this chunk if you are using the DataComputing package
 library(DataComputing)
-library(dplyr)
+library(rvest)
+library(lubridate)
 ```
 *Source file* 
 ```{r, results='asis', echo=FALSE}
@@ -20,27 +21,87 @@ includeSourceDocuments()
 <!-- Don't edit the material above this line -->
 
 ```{r Scrape1}
-library(rvest)
-library(lubridate)
 page <- "http://en.wikipedia.org/wiki/List_of_nuclear_reactors"
 xpath <- '//*[@id="mw-content-text"]/table[23]'
+xpath2 <- '//*[@id="mw-content-text"]/table[12]'
+xpath3 <- '//*[@id="mw-content-text"]/table[50]'
 table_list <- page %>%
   read_html() %>%
   html_nodes(xpath = xpath) %>%
   html_table(fill = TRUE)
 
-table_frame <- as.data.frame(table_list)
-table_frame <- table_frame[-1,]
-table_frame <-
-  table_frame %>%
+table_list2 <- page %>%
+  read_html() %>%
+  html_nodes(xpath = xpath2) %>%
+  html_table(fill = TRUE)
+
+#table_list3 <- page %>%
+#  read_html() %>%
+#  html_nodes(xpath = xpath3) %>%
+#  html_table(fill = TRUE)
+
+```
+
+```{r Clean1}
+table_frame1 <- as.data.frame(table_list)
+table_frame1 <- table_frame1[-1,]
+table_frame1 <-
+  table_frame1 %>%
   rename(Reactor_Type = Reactor) %>%
+  rename(ReactorNum = Reactor.No.) %>%
   rename(Reactor_Model = Reactor.1) %>%
   rename(Capacity_Net = Capacity.in.MW) %>%
   rename(Capacity_Gross = Capacity.in.MW.1) %>%
-  mutate(Capacity_Net = as.integer(Capacity_Net)) %>%
-  mutate(Capacity_Gross = as.integer((Capacity_Gross))) %>%
+  mutate(Capacity_Net = as.numeric(Capacity_Net)) %>%
+  mutate(Capacity_Gross = as.numeric((Capacity_Gross))) %>%
   mutate(Construction.Start.Date = dmy(Construction.Start.Date)) %>%
   mutate(Commercial.Operation.Date = dmy(Commercial.Operation.Date)) %>%
-  mutate(Closure = dmy(Closure))
+  mutate(Closure = dmy(Closure)) %>%
+  mutate(Country = "Japan")
+
+head(table_frame1,5)
+```
+
+
+```{r plot1}
+table_frame1 %>%
+  ggplot(aes(x = Construction.Start.Date, y = Capacity_Net, color = Reactor_Type, shape = Reactor_Type)) +
+  geom_point() +
+  ylab("Net Capacity") + xlab("Construction Start Date")
+```
+I interpret it as there not being significant increases in capacity for some reactor technologies, but steady increases in output for types PWR & PWR.
+
+```{r clean2}
+table_frame2 <- as.data.frame(table_list2)
+table_frame2 <- table_frame2[-1,]
+table_frame2 <-
+  table_frame2 %>%
+  rename(Reactor_Type = Reactor) %>%
+  rename(ReactorNum = Reactor.No.) %>%
+  rename(Reactor_Model = Reactor.1) %>%
+  rename(Capacity_Net = Capacity.in.MW) %>%
+  rename(Capacity_Gross = Capacity.in.MW.1) %>%
+  mutate(Capacity_Net = as.numeric(Capacity_Net)) %>%
+  mutate(Capacity_Gross = as.numeric((Capacity_Gross))) %>%
+  mutate(Construction.Start.Date = dmy(Construction.Start.Date)) %>%
+  mutate(Commercial.Operation.Date = dmy(Commercial.Operation.Date)) %>%
+  mutate(Closure = dmy(Closure)) %>%
+  mutate(Country = "China")
+
+head(table_frame2,5)
+```
+
+```{r clean3}
+table_frame3 <- rbind(table_frame1, table_frame2)
+head(table_frame3)
+tail(table_frame3)
+```
+The table for the united states organizes reactors into different regions. Each case though is a reactor and it's information, however the table is very messy. 
+
+```{r plot2, eval=FALSE, include=FALSE}
+table_frame1 %>%
+  ggplot(aes(y = Name, color = Status, shape = Reactor_Type)) +
+  geom_segment(xend = ) +
+  ylab("Reactor ID") + xlab("Operation")
 ```
 
