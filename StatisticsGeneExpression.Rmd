@@ -1,0 +1,20 @@
+---
+title: "Statistics of Gene Expression"
+author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
+date: "2016-10-24"
+output: 
+  html_document:
+    fig_height: 5
+    fig_width: 9
+---
+<!-- Don't edit in between this line and the one below -->
+```{r include=FALSE}
+# Don't delete this chunk if you are using the DataComputing package
+library(DataComputing)
+```
+*Source file* 
+```{r, results='asis', echo=FALSE}
+includeSourceDocuments()
+```
+<!-- Don't edit the material above this line -->
+
