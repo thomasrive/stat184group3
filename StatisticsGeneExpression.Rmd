@@ -92,6 +92,30 @@ SummaryStats %>%
 ```
 
 ```{r YourTurn1 Picking Own Probe}
-
+Probe_AT_D_3 <-
+  Narrow %>%
+  filter(Probe=="AT_D_3")
+SummaryStats2 <-
+  Probe_AT_D_3 %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = exp(mean(expression, na.rm = TRUE)))
+SummaryStats2 <-
+  Probe_AT_D_3 %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = mean(expression, na.rm = TRUE),
+            se = sd(expression, na.rm = TRUE) / sqrt(n()))
+SummaryStats2 <-
+  SummaryStats2 %>%
+  mutate(tissue = reorder(tissue, desc(mn_expr))) %>%
+  mutate(top = mn_expr + 2 * se,
+         bottom = mn_expr - 2 * se)
+SummaryStats2 %>%
+  ggplot(aes(x = tissue, y = exp(mn_expr))) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(x = tissue,
+                    ymax = exp(top),
+                    ymin = exp(bottom)),
+                width = 0.5) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
 ```
 
