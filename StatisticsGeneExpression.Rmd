@@ -18,3 +18,80 @@ includeSourceDocuments()
 ```
 <!-- Don't edit the material above this line -->
 
+```{r load}
+data("NCI60")
+data("NCI60cells")
+```
+
+```{r wrangling}
+Narrow <-
+  NCI60 %>%
+  tidyr::gather(cellLine, expression, -Probe)
+CellTypes <-
+  NCI60cells %>%
+  select(cellLine, tissue) %>%
+  mutate(cellLine = gsub("\\:",".",as.character(cellLine)))
+Narrow <- Narrow %>%
+  inner_join(CellTypes)
+
+Probe_TOP3A <-
+  Narrow %>%
+  filter(Probe=="TOP3A")
+```
+
+```{r Summarizing}
+SummaryStats <-
+  Probe_TOP3A %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = exp(mean(expression, na.rm = TRUE)))
+```
+
+```{r Figure-A6}
+SummaryStats %>%
+  ggplot(aes(x = tissue, y = mn_expr)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+```{r Figure-A7}
+Probe_TOP3A %>%
+  ggplot(aes(x =tissue, y = exp(expression))) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+```{r Fixing Figure-A6}
+SummaryStats <-
+  Probe_TOP3A %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = mean(expression, na.rm = TRUE),
+            se = sd(expression, na.rm = TRUE) / sqrt(n()))
+
+SummaryStats %>%
+  mutate(tissue = reorder(tissue, desc(mn_expr))) %>%
+  ggplot(aes(x = tissue, y = exp(mn_expr))) +
+  geom_bar(stat = "identity", fill = "gray", color = NA) +
+  geom_point(data = Probe_TOP3A, aes(x = tissue, y = exp(expression))) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  ylab("Mean Expression") + xlab("Tissue")
+```
+
+```{r Figure-A9}
+SummaryStats <-
+  SummaryStats %>%
+  mutate(top = mn_expr + 2 * se,
+         bottom = mn_expr - 2 * se)
+SummaryStats %>%
+  ggplot(aes(x = tissue, y = exp(mn_expr))) +
+  geom_bar(stat = "identity", alpha = 0.2) +
+  geom_errorbar(aes(x = tissue,
+                    ymax = exp(top),
+                    ymin = exp(bottom)),
+                width = 0.5) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+```{r YourTurn1 Picking Own Probe}
+
+```
+
