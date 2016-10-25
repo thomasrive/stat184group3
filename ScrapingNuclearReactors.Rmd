@@ -1,5 +1,5 @@
 ---
-title: "Stocks & Dividends"
+title: "Scraping Nuclear Reactors"
 author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
 date: "2016-10-23"
 output: 
@@ -98,10 +98,10 @@ tail(table_frame3)
 ```
 The table for the united states organizes reactors into different regions. Each case though is a reactor and it's information, however the table is very messy. 
 
-```{r plot2, eval=FALSE, include=FALSE}
+```{r plot2, echo=TRUE}
 table_frame1 %>%
-  ggplot(aes(y = Name, color = Status, shape = Reactor_Type)) +
-  geom_segment(xend = ) +
-  ylab("Reactor ID") + xlab("Operation")
+  ggplot(aes(x = Construction.Start.Date, y = Name)) +
+  geom_segment(aes(x = Construction.Start.Date, y = Name, xend = Commercial.Operation.Date, yend = Name, colour = Reactor_Type)) +
+  ylab("Reactor ID") + xlab("Operation") + labs(colour = "Type", linetype = "Type", size = "Number")
 ```
 
