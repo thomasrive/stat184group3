@@ -112,10 +112,22 @@ SummaryStats2 <-
 SummaryStats2 %>%
   ggplot(aes(x = tissue, y = exp(mn_expr))) +
   geom_bar(stat = "identity") +
+  #geom_point(data = Probe_AT_D_3, stat = "identity") +
   geom_errorbar(aes(x = tissue,
                     ymax = exp(top),
                     ymin = exp(bottom)),
                 width = 0.5) +
   theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+plot1 <-
+  ggplot(SummaryStats2, aes(x = tissue, y = exp(mn_expr))) +
+  geom_errorbar(aes(x = tissue,
+                    ymax = exp(top),
+                    ymin = exp(bottom)),
+                width = 0.5) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  geom_point(data = Probe_AT_D_3, aes(x = tissue, y = exp(expression))) +
+  xlab("Tissue Type") + ylab("Exp(Expression)") + ggtitle("Gene Expression per Tissue")
+plot1
 ```
 
