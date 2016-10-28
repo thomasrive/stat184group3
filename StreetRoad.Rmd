@@ -1,0 +1,80 @@
+---
+title: "Street Or Road"
+author: "Rocco Vitalone, Thomas Rivera, Kristin Sarsfield, Ruizhi Qiao"
+date: "2016-10-28"
+output: 
+  html_document:
+    fig_height: 5
+    fig_width: 9
+---
+<!-- Don't edit in between this line and the one below -->
+```{r include=FALSE}
+# Don't delete this chunk if you are using the DataComputing package
+library(DataComputing)
+```
+*Source file* 
+```{r, results='asis', echo=FALSE}
+includeSourceDocuments()
+```
+<!-- Don't edit the material above this line -->
+
+```{r downloading}
+download.file(url = "http://tiny.cc/dcf/street-addresses.csv", destfile = "streetaddresses.csv")
+download.file(url = "http://tiny.cc/dcf/CMS_ProvidersSimple.rds", destfile = "CMS.rds")
+streetaddresses <- read.csv("streetaddresses.csv", sep="", stringsAsFactors=FALSE)
+CMS <- readRDS("CMS.rds")
+```
+
+```{r solved1}
+Addresses <- streetaddresses
+Sample <- Addresses %>%
+  sample_n(size = 50)
+
+Matches <-
+  Sample %>%
+  filter(grepl("PO", address))
+head(Matches)
+Dont <-
+  Sample %>%
+  filter( ! grepl("PO", address))
+head(Dont)
+```
+
+```{r solved2}
+pattern <-"BOX\\s+(\\d+)"
+Matches <-
+  Sample %>%
+  filter(grepl(pattern, address))
+head(Matches)
+Dont <-
+  Sample %>%
+  filter( ! grepl(pattern, address))
+head(Dont)
+
+BoxNumbers <-
+  Sample %>%
+  filter(grepl(pattern, address)) %>%
+  tidyr::extract(address, into="boxnum", regex=pattern)
+```
+
+####Your Turn 1
+```{r YourTurn1}
+pattern2 <- "(ST|RD|ROAD|CIRCLE|TRAIL|WAY|LN|AVE|DR|CIR|CT|LANE|PATH|PL|PKWY|CV|COURT|BLVD|TERRACE|RUN|PT|TRL|LOOP|HWY)" #Sets pattern into pattern2
+
+LeftOvers <- #Input into Leftovers
+  Addresses %>% #Use Addresses dataframe
+  filter( ! grepl(pattern2, address), #first filter for pattern2 in address column
+          ! grepl("\\sAPT|UNIT\\s[\\d]+$", address), #Filter for Apt or unit
+          ! grepl( " BOX ", address), # Filter for BOX
+          ! grepl( "BOX ", address)
+          )
+
+Matches <-
+  Addresses%>%
+  filter(grepl(pattern2, address))
+
+Dont <-
+  Addresses %>%
+  filter( ! grepl(pattern2, address))
+```
+
