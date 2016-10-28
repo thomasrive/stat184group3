@@ -130,4 +130,94 @@ plot1 <-
   xlab("Tissue Type") + ylab("Exp(Expression)") + ggtitle("Gene Expression per Tissue")
 plot1
 ```
+```{r Probing for Probe}
+r2 <- function(data) {
+  mosaic::rsquared(lm(data$expression ~ data$tissue))
+}
+
+ProbeR2 <-
+  Narrow %>%
+  group_by(Probe) %>%
+  do(r2 = r2(.)) %>%
+  mutate(r2 = unlist(r2))
+
+Actual <-
+  ProbeR2 %>%
+  arrange(desc(r2)) %>%
+  head(30) %>%
+  mutate(Probe = reorder(Probe, desc(r2)))
+
+Actual %>%
+  ggplot(aes(x = Probe, y = r2)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+Select first probe, A_23_P61317
+
+```{r Probing High R2}
+Probe_A_23_P61317 <-
+  Narrow %>%
+  filter(Probe=="A_23_P61317")
+SummaryStats3 <-
+  Probe_A_23_P61317 %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = exp(mean(expression, na.rm = TRUE)))
+SummaryStats3 <-
+  Probe_A_23_P61317 %>%
+  group_by(tissue) %>%
+  summarise(mn_expr = mean(expression, na.rm = TRUE),
+            se = sd(expression, na.rm = TRUE) / sqrt(n()))
+SummaryStats3 <-
+  SummaryStats3 %>%
+  mutate(tissue = reorder(tissue, desc(mn_expr))) %>%
+  mutate(top = mn_expr + 2 * se,
+         bottom = mn_expr - 2 * se)
+SummaryStats3 %>%
+  ggplot(aes(x = tissue, y = exp(mn_expr))) +
+  geom_bar(stat = "identity") +
+  #geom_point(data = Probe_AT_D_3, stat = "identity") +
+  geom_errorbar(aes(x = tissue,
+                    ymax = exp(top),
+                    ymin = exp(bottom)),
+                width = 0.5) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+plot2 <-
+  ggplot(SummaryStats3, aes(x = tissue, y = exp(mn_expr))) +
+  geom_errorbar(aes(x = tissue,
+                    ymax = exp(top),
+                    ymin = exp(bottom)),
+                width = 0.5) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  geom_point(data = Probe_A_23_P61317, aes(x = tissue, y = exp(expression))) +
+  xlab("Tissue Type") + ylab("Exp(Expression)") + ggtitle("Gene Expression per Tissue")
+plot2
+```
+
+```{r False Discoveries}
+NullR2 <-
+  Narrow %>%
+  group_by(Probe) %>%
+  mutate(expression = mosaic::shuffle(expression)) %>%
+  group_by(Probe) %>%
+  do(r2 = r2(.)) %>%
+  mutate(r2 = unlist(r2))
+
+ProbeR2 %>%
+  ggplot(aes(x=r2)) +
+  geom_density(fill = "gray30", color = NA) +
+  geom_density(data = NullR2, aes(x=r2),
+               fill = "gray80", alpha =0.75, color=NA)
+
+Null <-
+  NullR2 %>%
+  arrange(desc(r2)) %>%
+  head(30)
+Actual$null <- Null$r2
+Actual %>%
+  ggplot(aes(x =Probe, y =r2)) +
+  geom_point() +
+  geom_point(aes(y=null), color="gray50") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
 
