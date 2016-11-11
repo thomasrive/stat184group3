@@ -75,6 +75,9 @@ Matches <-
 
 Dont <-
   Addresses %>%
-  filter( ! grepl(pattern2, address))
+  filter( ! grepl(pattern2, address)) 
+
+str(Matches)
+str(Dont)
 ```
 
